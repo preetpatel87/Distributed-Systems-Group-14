@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 3308
+  selector:
+    app: mongodb
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - image: bitnami/mongodb
+          name: mongodb
+          env:
+            - name: MONGODB_ROOT_PASSWORD
+              value: password
+            - name: MONGODB_ROOT_USERNAME
+              value: user
+          ports:
+            - containerPort: 3308
+              name: mongodb
