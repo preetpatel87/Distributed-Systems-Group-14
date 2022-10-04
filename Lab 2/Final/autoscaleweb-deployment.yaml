@@ -1,0 +1,24 @@
+  apiVersion: apps/v1 
+  kind: Deployment 
+  metadata: 
+    name: autoscaleweb-deployment
+  spec: 
+    replicas: 1
+    selector: 
+      matchLabels: 
+        app: autoscaleweb-deployment
+    template: 
+      metadata: 
+        labels: 
+          app: autoscaleweb-deployment
+      spec: 
+        containers: 
+        - name: server 
+          image: brendanburns/dictionary-server 
+          ports: 
+          - containerPort: 8080 
+          resources:
+            limits:
+              cpu: 100m
+            requests:
+              cpu: 100m
