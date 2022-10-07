@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loadbalancer-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: loadbalancer-deployment
+  template:
+    metadata:
+      labels:
+        app: loadbalancer-deployment
+    spec:
+      containers:
+      - name: server
+        image: brendanburns/dictionary-server
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
